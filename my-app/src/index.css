@@ -1,1 +1,11 @@
+.photo-card {
+  position: relative;
+  display: inline-block;
+}
 
+.photo-card img {
+  width: 600px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
