@@ -1,0 +1,24 @@
+{
+	"photos": [
+		{
+			"id": 1,
+			"url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.56kccFjbrXJeecoul15jwQHaEK%3Fpid%3DApi&f=1&ipt=3754dfe56b52e493a2517a163bc2f13f983249d5dd5641788abebabd4f46f3d3&ipo=images",
+			"liked": false
+		},
+		{
+			"id": 2,
+			"url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.Xkqhsyv5QrZdGRioD9a3tAHaD5%3Fpid%3DApi&f=1&ipt=906debf69b6536ffa1f596ae0790f12417455daf519bbb2e3823f8e8d5a5f2df&ipo=images",
+			"liked": false
+		},
+		{
+			"id": 3,
+			"url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.siliconrepublic.com%2Fwp-content%2Fuploads%2F2015%2F12%2Ffunny-animal-photos-pose-e1448977167787.jpg&f=1&nofb=1&ipt=ed2b530c73f9b4987e0d21c2d6a1876074ba087246c6c664dc6e6b0e70cdbff6",
+			"liked": false
+		},
+		{
+			"id": 4,
+			"url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.gKk8XO-IyDFKBnp9rEAmhgHaNG%3Fpid%3DApi&f=1&ipt=2cee5e86f39c0c943f085eeb8f55fcf68c485f5019c9144eb1affa0907a43d34&ipo=images",
+			"liked": false
+		}
+	]
+}
