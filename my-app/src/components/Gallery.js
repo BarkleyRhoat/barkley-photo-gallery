@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AddPhotoForm from "./AddPhotoForm";
+import PhotoCard from "./PhotoCard";
 
 function Gallery() {
 	const [photos, setPhotos] = useState([]);
@@ -11,6 +12,16 @@ function Gallery() {
 		setCurrentIndex(photos.length);
 		setShowForm(false);
 	}
+
+	function handleDeletePhoto(id) {
+		fetch(`http://localhost:3001/photos/${id}`, {
+			method: "DELETE",
+		}).then(() => {
+			setPhotos((prev) => prev.filter((photo) => photo.id !== id));
+			setCurrentIndex(0);
+		});
+	}
+
 	useEffect(() => {
 		fetch("http://localhost:3001/photos")
 			.then((response) => response.json())
@@ -30,10 +41,10 @@ function Gallery() {
 	return (
 		<div>
 			<h1>Gallery</h1>
+			<button onClick={handlePrev}>⬅️</button>
+			<button onClick={handleNext}>➡️</button>
 			<div className="carousel">
-				<button onClick={handlePrev}>⬅️</button>
-				<img src={photos[currentIndex].url} alt={currentIndex + 1} />
-				<button onClick={handleNext}>➡️</button>
+				<PhotoCard photo={photos[currentIndex]} onDelete={handleDeletePhoto} />
 			</div>
 			<button onClick={() => setShowForm((prev) => !prev)}>
 				{showForm ? "Cancel" : "Add Photo"}
