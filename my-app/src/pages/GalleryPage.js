@@ -1,7 +1,13 @@
 import Gallery from "../components/Gallery";
+import Header from "../components/Header";
 
 function GalleryPage() {
-	return <Gallery />;
+    return (
+			<>
+				<Header />
+				<Gallery />
+			</>
+		);
 }
 
 export default GalleryPage;
