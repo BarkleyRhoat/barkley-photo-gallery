@@ -46,16 +46,16 @@ function AddPhotoForm({ onAddPhoto }) {
 			</button>
 
 			{mode === "url" ? (
-        <input
-          key="url-input"
+				<input
+					key="url-input"
 					type="text"
 					placeholder="Enter Image URL"
 					value={url}
 					onChange={(event) => setUrl(event.target.value)}
 				/>
 			) : (
-          <input
-            key="file-input"
+				<input
+					key="file-input"
 					type="file"
 					accept="image/jpeg,image/png,image/gif,image/webp"
 					onChange={handleFileChange}
