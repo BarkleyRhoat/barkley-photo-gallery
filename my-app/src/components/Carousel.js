@@ -16,14 +16,14 @@ function Carousel({ photos, onDelete, onLike, onUnlike }) {
 
 	return (
 		<div className="carousel">
-			<button onClick={handlePrev}>⬅️</button>
+			<button onClick={handlePrev}>🏃</button>
 			<PhotoCard
 				photo={photos[currentIndex]}
 				onDelete={onDelete}
-        onLike={onLike}
-        onUnlike={onUnlike}
+				onLike={onLike}
+				onUnlike={onUnlike}
 			/>
-			<button onClick={handleNext}>➡️</button>
+			<button onClick={handleNext}>🏃‍➡️</button>
 		</div>
 	);
 }

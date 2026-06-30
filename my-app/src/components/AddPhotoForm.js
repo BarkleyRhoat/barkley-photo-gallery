@@ -30,21 +30,41 @@ function AddPhotoForm({ onAddPhoto }) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<button type="button" onClick={() => setMode("url")}>URL</button>
-			<button type="button" onClick={() => setMode("file")}>File</button>
+			<button
+				type="button"
+				className={`btn-toggle ${mode === "url" ? "active" : ""}`}
+				onClick={() => setMode("url")}
+			>
+				URL
+			</button>
+			<button
+				type="button"
+				className={`btn-toggle ${mode === "file" ? "active" : ""}`}
+				onClick={() => setMode("file")}
+			>
+				File
+			</button>
 
 			{mode === "url" ? (
 				<input
+					key="url-input"
 					type="text"
 					placeholder="Enter Image URL"
 					value={url}
 					onChange={(event) => setUrl(event.target.value)}
 				/>
 			) : (
-				<input type="file" accept="image/*" onChange={handleFileChange} />
+				<input
+					key="file-input"
+					type="file"
+					accept="image/jpeg,image/png,image/gif,image/webp"
+					onChange={handleFileChange}
+				/>
 			)}
 
-			<button type="submit">Add Photo</button>
+			<button type="submit" className="btn-primary">
+				Add Photo
+			</button>
 		</form>
 	);
 }

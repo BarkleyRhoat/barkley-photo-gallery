@@ -4,7 +4,8 @@ import Carousel from "./Carousel";
 
 function Gallery() {
 	const [photos, setPhotos] = useState([]);
-	const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 	function handleAddPhoto(newPhoto) {
 		setPhotos((prev) => [...prev, newPhoto]);
@@ -34,13 +35,15 @@ function Gallery() {
 	}
 
 	useEffect(() => {
-		fetch('http://localhost:3001/photos')
+		fetch("http://localhost:3001/photos")
 			.then((response) => response.json())
-			.then((data) => setPhotos(data));
+			.then((data) => {
+				setPhotos(data);
+				setLoading(false);
+			});
 	}, []);
 
-	if (photos.length === 0) return <p>Loading...</p>;
-
+	if (loading) return <p>Loading...</p>;
 	return (
 		<div>
 			<h1>Gallery</h1>
@@ -49,7 +52,7 @@ function Gallery() {
 				onDelete={handleDeletePhoto}
 				onLike={handleLikePhoto}
 			/>
-			<button onClick={() => setShowForm((prev) => !prev)}>
+			<button className="btn-primary" onClick={() => setShowForm((prev) => !prev)}>
 				{showForm ? 'Cancel' : 'Add Photo'}
 			</button>
 			{showForm && <AddPhotoForm onAddPhoto={handleAddPhoto} />}

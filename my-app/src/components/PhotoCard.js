@@ -5,12 +5,24 @@ function PhotoCard({ photo, onDelete, onLike, onUnlike }) {
 		<div className="photo-card">
 			<img src={photo.url} alt="gallery" />
 			{onLike && (
-				<button onClick={() => onLike(photo.id)} disabled={photo.liked}>
+				<button
+					className="btn-like"
+					onClick={() => onLike(photo.id)}
+					disabled={photo.liked}
+				>
 					{photo.liked ? "❤️ Liked" : "🤍 Like"}
 				</button>
-      )}
-      {onUnlike && <button onClick={() => onUnlike(photo.id)}>💔 Unlike</button>}
-			{onDelete && <button onClick={() => onDelete(photo.id)}>Delete</button>}
+			)}
+			{onUnlike && (
+				<button className="btn-unlike" onClick={() => onUnlike(photo.id)}>
+					💔 Unlike
+				</button>
+			)}
+			{onDelete && (
+				<button className="btn-delete" onClick={() => onDelete(photo.id)}>
+					Delete
+				</button>
+			)}
 		</div>
 	);
 }
