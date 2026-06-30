@@ -24,8 +24,12 @@ function FavoritesPage() {
     })
   }
 
-	if (favorites.length === 0) return <p>No favorites yet.</p>;
-
+  if (favorites.length === 0) return (
+		<div>
+			<Header />
+			<p>No favorites yet.</p>
+		</div>
+	);
 	return (
     <div>
       <Header />
