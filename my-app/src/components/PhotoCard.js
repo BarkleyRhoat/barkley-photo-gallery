@@ -1,6 +1,6 @@
 import React from "react";
 
-function PhotoCard({ photo, onDelete, onLike }) {
+function PhotoCard({ photo, onDelete, onLike, onUnlike }) {
 	return (
 		<div className="photo-card">
 			<img src={photo.url} alt="gallery" />
@@ -8,7 +8,8 @@ function PhotoCard({ photo, onDelete, onLike }) {
 				<button onClick={() => onLike(photo.id)} disabled={photo.liked}>
 					{photo.liked ? "❤️ Liked" : "🤍 Like"}
 				</button>
-			)}
+      )}
+      {onUnlike && <button onClick={() => onUnlike(photo.id)}>💔 Unlike</button>}
 			{onDelete && <button onClick={() => onDelete(photo.id)}>Delete</button>}
 		</div>
 	);

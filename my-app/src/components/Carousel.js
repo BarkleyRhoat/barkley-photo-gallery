@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PhotoCard from './PhotoCard';
 
-function Carousel({ photos, onDelete, onLike }) {
+function Carousel({ photos, onDelete, onLike, onUnlike }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
 	function handlePrev() {
@@ -20,7 +20,8 @@ function Carousel({ photos, onDelete, onLike }) {
 			<PhotoCard
 				photo={photos[currentIndex]}
 				onDelete={onDelete}
-				onLike={onLike}
+        onLike={onLike}
+        onUnlike={onUnlike}
 			/>
 			<button onClick={handleNext}>➡️</button>
 		</div>
