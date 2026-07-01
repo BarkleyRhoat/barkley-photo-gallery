@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import Carousel from '../components/Carousel';
 import Header from "../components/Header";
+import { API_URL } from "../api";
 
 function FavoritesPage() {
 	const [favorites, setFavorites] = useState([]);
 
 	useEffect(() => {
-		fetch('http://localhost:3001/photos?liked=true')
+		fetch(`${API_URL}/photos?liked=true`)
 			.then((r) => r.json())
 			.then((data) => setFavorites(data));
   }, []);
   
   function handleUnlikePhoto(id) {
-    fetch(`http://localhost:3001/photos/${id}`, {
+    fetch(`${API_URL}/photos/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

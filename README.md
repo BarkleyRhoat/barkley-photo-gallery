@@ -29,7 +29,50 @@ REST API.
 
 ## Project Structure
 
-The application lives in the `my-app/` directory:
+The application lives in the `my-app/`
+
+## Live Links
+
+- Frontend: [https://barkley-photo-gallery.netlify.app](https://barkley-photo-gallery.netlify.app)
+- Backend API: [https://barkley-photo-gallery.onrender.com](https://barkley-photo-gallery.onrender.com)
+
+> The frontend is deployed on Netlify, and the JSON Server backend is deployed as a Render Web Service.
+
+## Deployment
+
+### Frontend - Netlify
+
+The React frontend is deployed with Netlify.
+
+Netlify build settings:
+
+- Base directory: `my-app`
+- Build command: `npm run build`
+- Publish directory: `my-app/build`
+- Package directory: Not set
+
+Because this app uses React Router, `my-app/public/_redirects` includes the following rewrite rule so direct links and page refreshes work:
+
+/*    /index.html   200
+
+The frontend calls the API using the `REACT_APP_API_URL` environment variable
+(see [Environment Variables](#environment-variables)). `my-app/.env.production`
+sets this to the deployed Render backend URL, so Netlify production builds
+automatically point at it.
+
+### Backend - Render
+
+The JSON Server backend is deployed as a Render Web Service.
+
+Render settings:
+
+- Root directory: `my-app`
+- Build command: `npm install`
+- Start command: `npm run server`
+
+The `server` script binds to Render's assigned port:
+
+json-server --watch db.json --host 0.0.0.0 --port ${PORT:-3001}
 
 ## Setup
 
@@ -66,6 +109,17 @@ In a second terminal, start the development server (opens the app on
 ```bash
 npm start
 ```
+
+## Environment Variables
+
+The frontend reads its API base URL from `REACT_APP_API_URL` (see
+`my-app/src/api.js`):
+
+- **Local development:** not set, so requests fall back to
+  `http://localhost:3001` (the local `json-server`).
+- **Production build:** set in `my-app/.env.production` to the deployed
+  Render backend URL, so `npm run build` (used by Netlify) bakes in the
+  correct API URL automatically
 
 ## Available Scripts
 

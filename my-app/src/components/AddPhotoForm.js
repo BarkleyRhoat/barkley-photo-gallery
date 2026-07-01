@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../api";
 
 function AddPhotoForm({ onAddPhoto }) {
 	const [url, setUrl] = useState("");
@@ -16,7 +17,7 @@ function AddPhotoForm({ onAddPhoto }) {
 		event.preventDefault();
 		if (!url) return;
 
-		fetch("http://localhost:3001/photos", {
+		fetch(`${API_URL}/photos`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ url, liked: false }),

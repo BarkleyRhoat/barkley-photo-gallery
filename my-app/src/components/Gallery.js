@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AddPhotoForm from "./AddPhotoForm";
 import Carousel from "./Carousel";
+import { API_URL } from "../api";
 
 function Gallery() {
 	const [photos, setPhotos] = useState([]);
@@ -13,7 +14,7 @@ function Gallery() {
 	}
 
 	function handleDeletePhoto(id) {
-		fetch(`http://localhost:3001/photos/${id}`, {
+		fetch(`${API_URL}/photos/${id}`, {
 			method: 'DELETE',
 		}).then(() => {
 			setPhotos((prev) => prev.filter((photo) => photo.id !== id));
@@ -21,7 +22,7 @@ function Gallery() {
 	}
 
 	function handleLikePhoto(id) {
-		fetch(`http://localhost:3001/photos/${id}`, {
+		fetch(`${API_URL}/photos/${id}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ liked: true }),
@@ -35,7 +36,7 @@ function Gallery() {
 	}
 
 	useEffect(() => {
-		fetch("http://localhost:3001/photos")
+		fetch(`${API_URL}/photos`)
 			.then((response) => response.json())
 			.then((data) => {
 				setPhotos(data);
