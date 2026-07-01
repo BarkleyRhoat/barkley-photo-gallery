@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { API_URL } from "../api";
+import { compressImage } from "../compressImage";
 
 function AddPhotoForm({ onAddPhoto }) {
 	const [url, setUrl] = useState("");
 	const [mode, setMode] = useState("url");
+	const [processing, setProcessing] = useState(false);
+	const [error, setError] = useState("");
 
 	function handleFileChange(event) {
 		const file = event.target.files[0];
 		if (!file) return;
-		const reader = new FileReader();
-		reader.onloadend = () => setUrl(reader.result);
-		reader.readAsDataURL(file);
+		setError("");
+		setProcessing(true);
+		compressImage(file)
+			.then((dataUrl) => setUrl(dataUrl))
+			.catch(() => setError("Sorry, that image couldn't be processed."))
+			.finally(() => setProcessing(false));
 	}
 
 	function handleSubmit(event) {
@@ -63,7 +69,10 @@ function AddPhotoForm({ onAddPhoto }) {
 				/>
 			)}
 
-			<button type="submit" className="btn-primary">
+			{processing && <p className="upload-status">Processing image…</p>}
+			{error && <p className="upload-error">{error}</p>}
+
+			<button type="submit" className="btn-primary" disabled={processing}>
 				Add Photo
 			</button>
 		</form>
