@@ -1,24 +1,26 @@
-import { useState } from 'react';
-import PhotoCard from './PhotoCard';
+import { useState } from "react";
+import PhotoCard from "./PhotoCard";
 
 function Carousel({ photos, onDelete, onLike, onUnlike }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
+	if (photos.length === 0) return <p>No photos yet.</p>;
+
+	const correctedIndex = Math.min(currentIndex, photos.length - 1);
+
 	function handlePrev() {
-		setCurrentIndex((index) => (index === 0 ? photos.length - 1 : index - 1));
+		setCurrentIndex(correctedIndex === 0 ? photos.length - 1 : correctedIndex - 1);
 	}
 
 	function handleNext() {
-		setCurrentIndex((index) => (index === photos.length - 1 ? 0 : index + 1));
+		setCurrentIndex(correctedIndex === photos.length - 1 ? 0 : correctedIndex + 1);
 	}
-
-	if (photos.length === 0) return <p>No photos yet.</p>;
 
 	return (
 		<div className="carousel">
 			<button onClick={handlePrev}>🏃</button>
 			<PhotoCard
-				photo={photos[currentIndex]}
+				photo={photos[correctedIndex]}
 				onDelete={onDelete}
 				onLike={onLike}
 				onUnlike={onUnlike}
