@@ -46,18 +46,21 @@ function Gallery() {
 
 	if (loading) return <p>Loading...</p>;
 	return (
-		<div>
+		<>
 			<h1>Gallery</h1>
 			<Carousel
 				photos={photos}
 				onDelete={handleDeletePhoto}
 				onLike={handleLikePhoto}
 			/>
-			<button className="btn-primary" onClick={() => setShowForm((prev) => !prev)}>
-				{showForm ? 'Cancel' : 'Add Photo'}
+			<button
+				className="btn-primary"
+				onClick={() => setShowForm((prev) => !prev)}
+			>
+				{showForm ? "Cancel" : "Add Photo"}
 			</button>
 			{showForm && <AddPhotoForm onAddPhoto={handleAddPhoto} />}
-		</div>
+		</>
 	);
 }
 

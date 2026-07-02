@@ -6,22 +6,25 @@ function Carousel({ photos, onDelete, onLike, onUnlike }) {
 
 	if (photos.length === 0) return <p>No photos yet.</p>;
 
-	const correctedIndex = Math.min(currentIndex, photos.length - 1);
-
-	function handlePrev() {
-		setCurrentIndex(correctedIndex === 0 ? photos.length - 1 : correctedIndex - 1);
+  function handlePrev() {
+		setCurrentIndex(currentIndex === 0 ? photos.length - 1 : currentIndex - 1);
 	}
 
 	function handleNext() {
-		setCurrentIndex(correctedIndex === photos.length - 1 ? 0 : correctedIndex + 1);
+		setCurrentIndex(currentIndex === photos.length - 1 ? 0 : currentIndex + 1);
+	}
+
+	function handleDelete(id) {
+    handlePrev();
+    onDelete(id);
 	}
 
 	return (
 		<div className="carousel">
 			<button onClick={handlePrev}>🏃</button>
 			<PhotoCard
-				photo={photos[correctedIndex]}
-				onDelete={onDelete}
+				photo={photos[currentIndex]}
+				onDelete={handleDelete}
 				onLike={onLike}
 				onUnlike={onUnlike}
 			/>
