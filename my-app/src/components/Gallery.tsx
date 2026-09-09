@@ -4,7 +4,7 @@ import Carousel from "./Carousel";
 import { API_URL } from "../api";
 import { Photo } from "../types";
 
-function Gallery(): JSX.Element {
+function Gallery() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);

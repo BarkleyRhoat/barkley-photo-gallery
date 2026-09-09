@@ -1,82 +1,89 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { API_URL } from "../api";
 import { compressImage } from "../compressImage";
+import { Photo } from "../types";
 
-function AddPhotoForm({ onAddPhoto }) {
-	const [url, setUrl] = useState("");
-	const [mode, setMode] = useState("url");
-	const [processing, setProcessing] = useState(false);
-	const [error, setError] = useState("");
+interface AddPhotoFormProps {
+  onAddPhoto: (photo: Photo) => void;
+}
 
-	function handleFileChange(event) {
-		const file = event.target.files[0];
-		if (!file) return;
-		setError("");
-		setProcessing(true);
-		compressImage(file)
-			.then((dataUrl) => setUrl(dataUrl))
-			.catch(() => setError("Sorry, that image couldn't be processed."))
-			.finally(() => setProcessing(false));
-	}
+function AddPhotoForm({ onAddPhoto }: AddPhotoFormProps) {
+  const [url, setUrl] = useState<string>("");
+  const [mode, setMode] = useState<"url" | "file">("url");
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-	function handleSubmit(event) {
-		event.preventDefault();
-		if (!url) return;
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setError("");
+    setProcessing(true);
+    compressImage(file)
+      .then((dataUrl: string) => setUrl(dataUrl))
+      .catch(() => setError("Sorry, that image couldn't be processed."))
+      .finally(() => setProcessing(false));
+  }
 
-		fetch(`${API_URL}/photos`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ url, liked: false }),
-		})
-			.then((response) => response.json())
-			.then((newPhoto) => {
-				onAddPhoto(newPhoto);
-				setUrl("");
-			});
-	}
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    if (!url) return;
 
-	return (
-		<form onSubmit={handleSubmit}>
-			<button
-				type="button"
-				className={`btn-toggle ${mode === "url" ? "active" : ""}`}
-				onClick={() => setMode("url")}
-			>
-				URL
-			</button>
-			<button
-				type="button"
-				className={`btn-toggle ${mode === "file" ? "active" : ""}`}
-				onClick={() => setMode("file")}
-			>
-				File
-			</button>
+    fetch(`${API_URL}/photos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, liked: false }),
+    })
+      .then((response) => response.json())
+      .then((newPhoto: Photo) => {
+        onAddPhoto(newPhoto);
+        setUrl("");
+      });
+  }
 
-			{mode === "url" ? (
-				<input
-					key="url-input"
-					type="text"
-					placeholder="Enter Image URL"
-					value={url}
-					onChange={(event) => setUrl(event.target.value)}
-				/>
-			) : (
-				<input
-					key="file-input"
-					type="file"
-					accept="image/jpeg,image/png,image/gif,image/webp"
-					onChange={handleFileChange}
-				/>
-			)}
+  return (
+    <form onSubmit={handleSubmit}>
+      <button
+        type="button"
+        className={`btn-toggle ${mode === "url" ? "active" : ""}`}
+        onClick={() => setMode("url")}
+      >
+        URL
+      </button>
+      <button
+        type="button"
+        className={`btn-toggle ${mode === "file" ? "active" : ""}`}
+        onClick={() => setMode("file")}
+      >
+        File
+      </button>
 
-			{processing && <p className="upload-status">Processing image…</p>}
-			{error && <p className="upload-error">{error}</p>}
+      {mode === "url" ? (
+        <input
+          key="url-input"
+          type="text"
+          placeholder="Enter Image URL"
+          value={url}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setUrl(event.target.value)
+          }
+        />
+      ) : (
+        <input
+          key="file-input"
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          onChange={handleFileChange}
+        />
+      )}
 
-			<button type="submit" className="btn-primary" disabled={processing}>
-				Add Photo
-			</button>
-		</form>
-	);
+      {processing && <p className="upload-status">Processing image…</p>}
+      {error && <p className="upload-error">{error}</p>}
+
+      <button type="submit" className="btn-primary" disabled={processing}>
+        Add Photo
+      </button>
+    </form>
+  );
 }
 
 export default AddPhotoForm;
