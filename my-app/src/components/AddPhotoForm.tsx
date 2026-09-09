@@ -1,4 +1,5 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
+import { useForm } from "react-hook-form"
 import { API_URL } from "../api";
 import { compressImage } from "../compressImage";
 import { Photo } from "../types";
@@ -7,52 +8,67 @@ interface AddPhotoFormProps {
   onAddPhoto: (photo: Photo) => void;
 }
 
+type FormData = {
+  mode: "url" | "file";
+  url: string;
+}
+
 function AddPhotoForm({ onAddPhoto }: AddPhotoFormProps) {
-  const [url, setUrl] = useState<string>("");
-  const [mode, setMode] = useState<"url" | "file">("url");
   const [processing, setProcessing] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [fileError, setFileError] = useState("");
+
+  const {
+    register, 
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      mode: "url",
+      url: "",
+    },
+  });
+
+  const mode = watch("mode");
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
     const file = event.target.files?.[0];
     if (!file) return;
-    setError("");
+    setFileError("");
     setProcessing(true);
     compressImage(file)
-      .then((dataUrl: string) => setUrl(dataUrl))
-      .catch(() => setError("Sorry, that image couldn't be processed."))
+      .then((dataUrl) => setValue("url", dataUrl))
+      .catch(() => setFileError("Sorry, that image couldn't be processed."))
       .finally(() => setProcessing(false));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    if (!url) return;
-
+  function onSubmit(data: FormData): void {
     fetch(`${API_URL}/photos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, liked: false }),
+      body: JSON.stringify({ url: data.url, liked: false }),
     })
       .then((response) => response.json())
       .then((newPhoto: Photo) => {
         onAddPhoto(newPhoto);
-        setUrl("");
+        setValue("url", "");
       });
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <button
         type="button"
         className={`btn-toggle ${mode === "url" ? "active" : ""}`}
-        onClick={() => setMode("url")}
+        onClick={() => setValue("mode", "url")}
       >
         URL
       </button>
       <button
         type="button"
         className={`btn-toggle ${mode === "file" ? "active" : ""}`}
-        onClick={() => setMode("file")}
+        onClick={() => setValue("mode", "file")}
       >
         File
       </button>
@@ -62,10 +78,13 @@ function AddPhotoForm({ onAddPhoto }: AddPhotoFormProps) {
           key="url-input"
           type="text"
           placeholder="Enter Image URL"
-          value={url}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setUrl(event.target.value)
-          }
+          {...register("url", {
+            required: "An image URL is required",
+            pattern: {
+              value: /^https?:\/\/.+/,
+              message: "Please enter a valid URL starting with http:// or https://",
+            },
+          })}
         />
       ) : (
         <input
@@ -76,10 +95,15 @@ function AddPhotoForm({ onAddPhoto }: AddPhotoFormProps) {
         />
       )}
 
+      {errors.url && <p className="upload-error">{errors.url.message}</p>}
+      {fileError && <p className="upload-error">{fileError}</p>}
       {processing && <p className="upload-status">Processing image…</p>}
-      {error && <p className="upload-error">{error}</p>}
 
-      <button type="submit" className="btn-primary" disabled={processing}>
+      <button
+        type="submit"
+        className="btn-primary"
+        disabled={processing || !watch("url")}
+      >
         Add Photo
       </button>
     </form>
